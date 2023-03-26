@@ -5,15 +5,20 @@ import
     AppBar,
     Box,
     Button,
-    createTheme,
     IconButton,
     Toolbar,
     Typography,
     ThemeProvider
 } from "@mui/material";
 import {darkTheme} from "../constants/theme";
+import {useDispatch} from "react-redux";
+import {logout} from "../redux/slices/userSlice";
 
 const Navbar = ({isLogIn}) => {
+    const dispatch = useDispatch()
+    const onLogoutClick = () => {
+        dispatch(logout())
+    }
     return (
         <ThemeProvider theme={darkTheme}>
         <Box sx={{ flexGrow: 1 }}>
@@ -31,7 +36,7 @@ const Navbar = ({isLogIn}) => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         WebConf
                     </Typography>
-                    {isLogIn && <Button color="inherit">Log Out</Button>}
+                    {isLogIn && <Button onClick={onLogoutClick} color="inherit">Log Out</Button>}
                 </Toolbar>
             </AppBar>
         </Box>

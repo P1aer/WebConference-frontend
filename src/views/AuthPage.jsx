@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from "../layouts/navbar";
-import {Box, Container, Paper, Tab, Tabs, TextField, ThemeProvider} from "@mui/material";
+import {Box, Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
 import {darkTheme} from "../constants/theme";
 import Register from "../components/AuthTabs/Register";
 import Login from "../components/AuthTabs/Login";
@@ -15,7 +15,6 @@ const AuthPage = () => {
     return (
         <div>
             <Navbar isLogIn={false}/>
-
             <ThemeProvider theme={darkTheme}>
                 <Container maxWidth={'md'} sx={{marginTop: '3rem'}}>
                     <Paper sx={{height: '75vh'}}>

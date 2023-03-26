@@ -1,4 +1,4 @@
-import { literal, object, string, TypeOf } from 'zod';
+import {  object, string } from 'zod';
 
 export const registerSchema = object({
     name: string()

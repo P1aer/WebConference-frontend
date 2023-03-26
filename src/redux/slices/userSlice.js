@@ -35,7 +35,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        logOut: (state) => {
+        logout: (state) => {
             state.data = null
             state.status = "loading"
             localStorage.removeItem('token')
@@ -81,6 +81,6 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { logOut } = userSlice.actions
+export const { logout } = userSlice.actions
 
 export default userSlice.reducer

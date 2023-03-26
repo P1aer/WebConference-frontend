@@ -1,0 +1,14 @@
+.profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 1rem;
+  width: 100%;
+}
+.profile-inner {
+  display: flex;
+  align-items: center;
+}
+.profile-id {
+  font-size:0.8rem !important;
+}
