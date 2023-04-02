@@ -6,14 +6,16 @@ import {useParams} from "react-router-dom";
 import VideoStreamElement from "../components/VideoStreamElement/VideoStreamElement";
 import {socket} from "../socket";
 import Peer from "simple-peer";
+import {useWebRTC} from "../hooks/useWebRTC";
+import {LOCAL_VIDEO} from "../constants/rtc";
 
 const RoomView = () => {
     const currentRoom = useSelector(state => state.rooms.currentRoom)
     const userData = useSelector(state => state.user.data)
-    const [localStream, setLocalStream] = useState(null);
     const dispatch = useDispatch()
     const { id } = useParams()
-    const [remotePeers,setRemotePeers] = useState([])
+    const {clients:webClients, provideMediaRef} = useWebRTC(id)
+/*
 
     // сделать новый peer для нового пользователя
     const userJoinedRoom = () => {
@@ -46,29 +48,30 @@ const RoomView = () => {
             peer.signal(signal);
         });
 
-    }
+    }*/
 
     useEffect(() => {
         dispatch(fetchRoom({ id }))
     },[id,dispatch])
 
     useEffect(() => {
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: true })
-            .then((currentStream) => {
-                setLocalStream(currentStream);
-            });
         socket.auth = { ...socket.auth, userId: userData._id}
         socket.connect()
-        socket.on('userJoined',(data) => {
-
-        })
     },[])
     return (
         <MainLayout chat>
             <div>
                 {currentRoom && currentRoom.name}
-                <VideoStreamElement mediaStream={localStream}/>
+                {webClients.map((client) =>
+                    <VideoStreamElement key={client}>
+                        <video
+                            ref={instance => provideMediaRef(client,instance)}
+                            muted={client === LOCAL_VIDEO}
+                            autoPlay
+                            playsInline
+                        />
+                    </VideoStreamElement>
+                )}
             </div>
         </MainLayout>
     );

@@ -1,28 +1,16 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from "prop-types";
 
-const VideoStreamElement = ({mediaStream, isUnmuted = false}) => {
-    const videoRef = useRef()
-    useEffect(() => {
-        if (mediaStream) {
-            videoRef.current.srcObject = mediaStream
-        }
-    },[mediaStream])
+const VideoStreamElement = ({children}) => {
+
     return (
         <div>
-            { mediaStream &&
-                <video
-                    ref={videoRef}
-                    autoPlay
-                    muted={!isUnmuted}
-                />}
-
+            {children}
         </div>
     );
 };
 
 VideoStreamElement.propTypes = {
-    mediaStream: PropTypes.object.isRequired,
-    isUnmuted: PropTypes.bool
+    children: PropTypes.node
 }
 export default VideoStreamElement;

@@ -11,6 +11,8 @@ import {useDispatch, useSelector} from "react-redux";
 import RoomItem from "./RoomItem";
 import {socket} from "../../socket";
 import { useNavigate} from "react-router-dom";
+import {ACTIONS} from "../../constants/rtc";
+
 const SidebarMenu = () => {
     const [open, setOpen] = React.useState(false)
     const navigate = useNavigate()
@@ -19,8 +21,8 @@ const SidebarMenu = () => {
     const rooms = useSelector(state => state.rooms.allRooms)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     const selectMenuItem = (id) => {
-        socket.emit('ROOM:JOIN', id)
         navigate(`/rooms/${id}`)
     }
     useEffect(() => {
@@ -53,7 +55,7 @@ const SidebarMenu = () => {
                         Add room
                     </Button>
                 </Grid>
-                <Grid item sx={{flexBasis: '10%'}}>
+                <Grid item sx={{flexBasis: '10%',display: 'flex', alignItems: 'flex-end'}}>
                     <ProfileBar />
                 </Grid>
             </Grid>

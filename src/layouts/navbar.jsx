@@ -13,6 +13,7 @@ import
 import {darkTheme} from "../constants/theme";
 import {useDispatch} from "react-redux";
 import {logout} from "../redux/slices/userSlice";
+import {Link} from "react-router-dom";
 
 const Navbar = ({isLogIn}) => {
     const dispatch = useDispatch()
@@ -22,8 +23,8 @@ const Navbar = ({isLogIn}) => {
     return (
         <ThemeProvider theme={darkTheme}>
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar color="secondary" position="static">
-                <Toolbar>
+            <AppBar color="secondary" position="static" >
+                <Toolbar sx={{height: '9vh'}}>
                     <IconButton
                         size="large"
                         edge="start"
@@ -33,10 +34,10 @@ const Navbar = ({isLogIn}) => {
                     >
 
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        WebConf
+                    <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
+                        <Link style={{textDecoration:'none', color:'#ffffff'}} to={'/'}>WebConf </Link>
                     </Typography>
-                    {isLogIn && <Button onClick={onLogoutClick} color="inherit">Log Out</Button>}
+                    {isLogIn && <Button size='large' onClick={onLogoutClick} color="inherit">Log Out</Button>}
                 </Toolbar>
             </AppBar>
         </Box>
