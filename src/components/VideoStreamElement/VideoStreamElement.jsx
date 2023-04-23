@@ -1,10 +1,10 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
-
+import "./VideoStreamElement.scss"
 const VideoStreamElement = ({children}) => {
 
     return (
-        <div>
+        <div className='video-content'>
             {children}
         </div>
     );

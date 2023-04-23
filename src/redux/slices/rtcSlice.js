@@ -1,25 +1,33 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import axios from "../../axios";
-import {servers} from "../../constants/rtc";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    localStream: null,
-    // new RTCPeerConnection(servers);
-    peerConnection: null,
-    remoteStreams: {},
-    status: "loading"
+    isMicOn: false,
+    isCamOn: false,
+    isSoundOn: true
 }
 export const rtcSlice = createSlice({
     name: 'rtc',
     initialState,
     reducers: {
-
+        setMicState: (state, action) => {
+            state.isMicOn = action.payload
+        },
+        setCamState: (state, action) => {
+            state.isCamOn = action.payload
+        },
+        setSoundState: (state, action) => {
+            state.isSoundOn = action.payload
+        },
+        setRTCDefault: (state) => {
+            state.isSoundOn = initialState.isSoundOn
+            state.isMicOn = initialState.isMicOn
+            state.isCamOn = initialState.isCamOn
+        },
     },
     extraReducers: {
     }
 })
 
-// Action creators are generated for each case reducer function
-//export const { getLocalStream } = rtcSlice.actions
+export const { setCamState, setSoundState, setRTCDefault, setMicState } = rtcSlice.actions
 
 export default rtcSlice.reducer

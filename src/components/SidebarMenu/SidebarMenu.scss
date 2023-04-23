@@ -1,3 +1,5 @@
+@import "../../breakpoints";
+
 .rooms-title {
   padding: 0.75rem;
   background-color: #333044;
@@ -6,11 +8,21 @@
     margin-left: 3rem;
     padding: 0.2rem 0.5rem;
   }
+  @include hmd {
+    font-size: 1.5rem !important;
+    span {
+      margin-left: 1rem;
+    }
+  }
 }
 .rooms-container {
   overflow-y: scroll;
-  max-height: 29rem;
+  max-height: 76vh;
   padding: 0 !important;
+
+  @include hmd {
+    max-height: 66vh;
+  }
   &::-webkit-scrollbar {
     width: 7px;
   }

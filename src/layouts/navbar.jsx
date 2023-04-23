@@ -24,7 +24,7 @@ const Navbar = ({isLogIn}) => {
         <ThemeProvider theme={darkTheme}>
         <Box sx={{ flexGrow: 1 }}>
             <AppBar color="secondary" position="static" >
-                <Toolbar sx={{height: '9vh'}}>
+                <Toolbar sx={{height: '10vh'}}>
                     <IconButton
                         size="large"
                         edge="start"
@@ -32,7 +32,13 @@ const Navbar = ({isLogIn}) => {
                         aria-label="menu"
                         sx={{ mr: 2 }}
                     >
-
+                        <Link style={{textDecoration:'none', color:'#ffffff'}} to={'/'}>
+                            <img
+                                style={{ width: '3.5rem', height: '3.5rem'}}
+                                src={`${process.env.PUBLIC_URL}/wc_logo_2.png`}
+                                alt="logo"
+                            />
+                        </Link>
                     </IconButton>
                     <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
                         <Link style={{textDecoration:'none', color:'#ffffff'}} to={'/'}>WebConf </Link>

@@ -42,8 +42,13 @@ export const useWebRTC = (roomId) => {
             .then(() => socket.emit(ACTIONS.JOIN, roomId))
 
         return () => {
-            localMediaStream.current.getTracks().forEach(track => track.stop())
-            socket.emit(ACTIONS.LEAVE)
+            try {
+                localMediaStream.current.getTracks().forEach(track => track.stop())
+                socket.emit(ACTIONS.LEAVE)
+            }
+            catch (error) {
+                console.log(error)
+            }
         }
     },[roomId])
 

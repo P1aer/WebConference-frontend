@@ -1,0 +1,12 @@
+.video-content {
+  video {
+    border-radius: 50%;
+    border: #333044 4px solid;
+    object-fit: cover;
+    height: 300px;
+    width: 300px;
+  }
+  &.talking {
+    border: #0c8f3d 4px solid;
+  }
+}

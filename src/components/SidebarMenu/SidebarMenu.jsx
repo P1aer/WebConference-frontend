@@ -31,8 +31,8 @@ const SidebarMenu = () => {
     return (
         <>
             <Paper>
-            <Grid  sx={{height: '91vh'}} container spacing={0} direction="column">
-                <Grid item sx={{flexBasis: '90%'}}>
+               <Grid  sx={{height: '90vh'}} container spacing={0} direction="column">
+                <Grid item xs="auto">
                     <Typography className='rooms-title' variant='h4'>Rooms  <span>{rooms.length}</span></Typography>
                     <MenuList className='rooms-container'>
                         { rooms.map(elem => (
@@ -44,7 +44,7 @@ const SidebarMenu = () => {
                             />
                         ))}
                     </MenuList>
-                    <Divider></Divider>
+                    <Divider/>
                     <Button
                         onClick={handleOpen}
                         size="large"
@@ -55,12 +55,11 @@ const SidebarMenu = () => {
                         Add room
                     </Button>
                 </Grid>
-                <Grid item sx={{flexBasis: '10%',display: 'flex', alignItems: 'flex-end'}}>
+                <Grid item xs="auto">
                     <ProfileBar />
                 </Grid>
             </Grid>
-
-        </Paper>
+            </Paper>
             <CreateRoomDialog handleClose={handleClose} open={open}/>
         </>
     );
