@@ -9,16 +9,20 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 import HeadsetOffIcon from '@mui/icons-material/HeadsetOff';
 import PresentToAllIcon from '@mui/icons-material/PresentToAll';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined';
+import { blue } from '@mui/material/colors';
 import {Link} from "react-router-dom";
 
 import {useDispatch, useSelector} from "react-redux";
-import {setCamState, setMicState, setSoundState} from "../../redux/slices/rtcSlice";
+import {setCamState, setMicState, setSoundState, setChatState} from "../../redux/slices/rtcSlice";
 const StreamControlPanel = () => {
     const dispatch = useDispatch()
-    const {isCamOn, isSoundOn, isMicOn} = useSelector(state => state.rtc)
+    const { isCamOn, isSoundOn, isMicOn, isChatOpen } = useSelector(state => state.rtc)
     const toggleCam = () => dispatch(setCamState(!isCamOn))
     const toggleSound = () => dispatch(setSoundState(!isSoundOn))
     const toggleMic = () => dispatch(setMicState(!isMicOn))
+    const toggleChat = () => dispatch(setChatState(!isChatOpen))
     return (
         <Paper square className='stream-panel' >
             <Stack direction="row" spacing={4}>
@@ -32,6 +36,9 @@ const StreamControlPanel = () => {
                     {isSoundOn ? <HeadphonesIcon/> : <HeadsetOffIcon />}
                 </IconButton>
                 <IconButton><PresentToAllIcon/></IconButton>
+                <IconButton onClick={toggleChat}>
+                    { isChatOpen ? <ChatBubbleOutlinedIcon sx={{ color: blue[300] }}/> : <ChatOutlinedIcon/> }
+                </IconButton>
                 <Link to="/">
                     <IconButton color='error'><LogoutIcon/></IconButton>
                 </Link>

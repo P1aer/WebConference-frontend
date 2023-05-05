@@ -42,6 +42,11 @@ export const roomsSlice = createSlice({
     reducers: {
         leaveCurrentRoom: (state) => {
             state.currentRoom = null
+        },
+        addMessage: (state, action) => {
+            if (state.currentRoom) {
+                state.currentRoom.messages = [...state.currentRoom.messages, action.payload]
+            }
         }
     },
     extraReducers: {
@@ -80,6 +85,6 @@ export const roomsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { leaveCurrentRoom } = roomsSlice.actions
+export const { leaveCurrentRoom, addMessage } = roomsSlice.actions
 
 export default roomsSlice.reducer

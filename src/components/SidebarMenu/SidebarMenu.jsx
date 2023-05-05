@@ -9,9 +9,7 @@ import CreateRoomDialog from "../CreateRoomDialog";
 import { fetchRooms} from "../../redux/slices/roomsSlice";
 import {useDispatch, useSelector} from "react-redux";
 import RoomItem from "./RoomItem";
-import {socket} from "../../socket";
 import { useNavigate} from "react-router-dom";
-import {ACTIONS} from "../../constants/rtc";
 
 const SidebarMenu = () => {
     const [open, setOpen] = React.useState(false)
@@ -31,8 +29,8 @@ const SidebarMenu = () => {
     return (
         <>
             <Paper>
-               <Grid  sx={{height: '90vh'}} container spacing={0} direction="column">
-                <Grid item xs="auto">
+               <Grid container direction='column' sx={{display: 'flex', flexDirection: 'column', height: '90vh'}}>
+                <Grid item flexGrow={1} flexBasis="auto">
                     <Typography className='rooms-title' variant='h4'>Rooms  <span>{rooms.length}</span></Typography>
                     <MenuList className='rooms-container'>
                         { rooms.map(elem => (
@@ -55,7 +53,7 @@ const SidebarMenu = () => {
                         Add room
                     </Button>
                 </Grid>
-                <Grid item xs="auto">
+                <Grid item xs="auto" flexShrink={1} flexBasis='auto'>
                     <ProfileBar />
                 </Grid>
             </Grid>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Grid, ThemeProvider} from "@mui/material";
 import SidebarMenu from "../components/SidebarMenu/SidebarMenu";
 import {darkTheme} from "../constants/theme";
+import ChatComponent from "../components/Chat/ChatComponent";
 
 const MainLayout = ({ children, chat = false }) => {
     return (
@@ -11,16 +12,15 @@ const MainLayout = ({ children, chat = false }) => {
             <ThemeProvider theme={darkTheme}>
                 <Navbar isLogIn={true}/>
                 <Grid container spacing={0}>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} >
                         <SidebarMenu/>
                     </Grid>
-                    <Grid item xs={7}>
+                    <Grid item xs={ chat ? 7 : 10 }>
                         {children}
                     </Grid>
-                    { chat && <Grid item xs={3}>
-                            <div className='chat'>
-
-                            </div>
+                    { chat &&
+                        <Grid item xs={3}>
+                            <ChatComponent/>
                         </Grid>
                     }
                 </Grid>
