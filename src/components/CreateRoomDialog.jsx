@@ -26,6 +26,7 @@ const CreateRoomDialog = ({handleClose, open}) => {
     const dispatch = useDispatch()
     async function onCreateClick() {
         try {
+            if (!roomName) return
             dispatch(createRoom({
                 values: {
                     name: roomName,

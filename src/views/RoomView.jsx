@@ -18,7 +18,13 @@ const RoomView = () => {
     const isChatOpen = useSelector(state => state.rtc.isChatOpen)
     const dispatch = useDispatch()
     const { id } = useParams()
-    const {clients:webClients, provideMediaRef} = useWebRTC(id)
+    const {
+        clients: webClients,
+        provideMediaRef,
+        toggleMic,
+        toggleCam,
+        toggleSound
+    } = useWebRTC(id)
 
     useEffect(() => {
         dispatch(fetchRoom({ id }))
@@ -52,7 +58,11 @@ const RoomView = () => {
                     </VideoStreamElement>
                 )}
             </Paper>
-            <StreamControlPanel />
+            <StreamControlPanel
+                toggleMic={toggleMic}
+                toggleCam={toggleCam}
+                toggleSound={toggleSound}
+            />
         </MainLayout>
     );
 };

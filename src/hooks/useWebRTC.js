@@ -1,12 +1,20 @@
-import {useCallback, useEffect, useRef} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useStateWithCallback} from "./useStateWithCallback";
 import {socket} from "../socket";
 import {ACTIONS, LOCAL_VIDEO, SERVERS} from "../constants/rtc";
+import {useDispatch, useSelector} from "react-redux";
+import {setCamState, setMicState, setSoundState} from "../redux/slices/rtcSlice";
 
 
 
 export const useWebRTC = (roomId) => {
     const [clients, setClients] = useStateWithCallback([])
+    const panelState = useSelector(state => state.rtc)
+    const [savedState, setSavedState] = useState({
+        isMicOn: false,
+        isCamOn: false
+    })
+    const dispatch = useDispatch()
 
     const peerConnections = useRef({})
     const localMediaStream = useRef(null)
@@ -29,7 +37,8 @@ export const useWebRTC = (roomId) => {
         async function startLocalMedia() {
             localMediaStream.current = await navigator
                 .mediaDevices.getUserMedia({ video: true, audio: true })
-
+            localMediaStream.current.getAudioTracks()[0].enabled = false
+            localMediaStream.current.getVideoTracks()[0].enabled = false
             addNewClient(LOCAL_VIDEO,() => {
                 const localVideoElement = peerMediaElements.current[LOCAL_VIDEO]
                 if(localVideoElement) {
@@ -176,9 +185,55 @@ export const useWebRTC = (roomId) => {
     const provideMediaRef = useCallback( (id, node) => {
         peerMediaElements.current[id] = node
     },[])
+    const toggleSound = useCallback((withSave = true) => {
+        if (panelState.isSoundOn) {
+            setSavedState({
+                isMicOn: panelState.isMicOn,
+                isCamOn: panelState.isCamOn,
+            })
+            localMediaStream.current.getTracks().forEach(track => track.enabled = false)
+            for (const stream in peerConnections.current) {
+                peerMediaElements.current[stream].muted = true
+            }
+            dispatch(setCamState(false))
+            dispatch(setMicState(false))
+        }
+        else {
+            for (const stream in peerConnections.current) {
+                peerMediaElements.current[stream].muted = false
+            }
+            if (withSave) {
+                localMediaStream.current.getAudioTracks()[0].enabled = savedState.isMicOn
+                localMediaStream.current.getVideoTracks()[0].enabled = savedState.isCamOn
+                dispatch(setCamState(savedState.isCamOn))
+                dispatch(setMicState(savedState.isMicOn))
+            }
+
+        }
+    }, [panelState, savedState, peerConnections])
+    const toggleMic = useCallback(() => {
+        if (!panelState.isSoundOn && !panelState.isMicOn) {
+            toggleSound(false)
+            dispatch(setSoundState(true))
+        }
+        localMediaStream.current.getAudioTracks()[0].enabled = !panelState.isMicOn
+    },[panelState])
+
+    const toggleCam = useCallback(() => {
+        console.log(panelState,'state')
+        if (!panelState.isSoundOn && !panelState.isCamOn) {
+            console.log('state1')
+            toggleSound(false)
+            dispatch(setSoundState(true))
+        }
+        localMediaStream.current.getVideoTracks()[0].enabled = !panelState.isCamOn
+    },[panelState])
 
     return {
         clients,
         provideMediaRef,
+        toggleMic,
+        toggleCam,
+        toggleSound,
     }
 }

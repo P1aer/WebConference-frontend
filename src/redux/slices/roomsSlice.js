@@ -54,7 +54,6 @@ export const roomsSlice = createSlice({
             state.status = 'loading'
         },
         [createRoom.fulfilled]: (state, action) => {
-            state.currentRoom = action.payload
             state.allRooms.push(action.payload)
             state.status = 'fetched'
         },
