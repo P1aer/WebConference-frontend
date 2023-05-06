@@ -11,15 +11,16 @@ import HeadsetOffIcon from '@mui/icons-material/HeadsetOff';
 import PresentToAllIcon from '@mui/icons-material/PresentToAll';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { blue } from '@mui/material/colors';
 import {Link} from "react-router-dom";
-
 import {useDispatch, useSelector} from "react-redux";
 import {setCamState, setMicState, setSoundState, setChatState} from "../../redux/slices/rtcSlice";
 import PropTypes from "prop-types";
-const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound }) => {
+
+const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound, shareScreen, stopShare }) => {
     const dispatch = useDispatch()
-    const { isCamOn, isSoundOn, isMicOn, isChatOpen } = useSelector(state => state.rtc)
+    const { isCamOn, isSoundOn, isMicOn, isChatOpen, isScreenShare } = useSelector(state => state.rtc)
     const toggleCamIcon = () => {
         toggleCam()
         dispatch(setCamState(!isCamOn))
@@ -45,7 +46,9 @@ const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound }) => {
                 <IconButton  onClick={toggleSoundIcon}>
                     {isSoundOn ? <HeadphonesIcon/> : <HeadsetOffIcon />}
                 </IconButton>
-                <IconButton><PresentToAllIcon/></IconButton>
+                <IconButton onClick={isScreenShare ? stopShare : shareScreen}>
+                    { isScreenShare ? <CancelPresentationIcon/> :  <PresentToAllIcon /> }
+                </IconButton>
                 <IconButton onClick={toggleChat}>
                     { isChatOpen ? <ChatBubbleOutlinedIcon sx={{ color: blue[300] }}/> : <ChatOutlinedIcon/> }
                 </IconButton>
@@ -60,6 +63,8 @@ const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound }) => {
 StreamControlPanel.propTypes = {
     toggleMic: PropTypes.func.isRequired,
     toggleCam: PropTypes.func.isRequired,
-    toggleSound: PropTypes.func.isRequired
+    toggleSound: PropTypes.func.isRequired,
+    shareScreen: PropTypes.func.isRequired,
+    stopShare: PropTypes.func.isRequired,
 }
 export default StreamControlPanel;

@@ -23,7 +23,10 @@ const RoomView = () => {
         provideMediaRef,
         toggleMic,
         toggleCam,
-        toggleSound
+        toggleSound,
+        displayVideoElement,
+        shareScreen,
+        stopSharingScreen,
     } = useWebRTC(id)
 
     useEffect(() => {
@@ -57,11 +60,19 @@ const RoomView = () => {
                         />
                     </VideoStreamElement>
                 )}
+{/*                    <video
+                      ref={displayVideoElement}
+                      autoPlay
+                      playsInline
+                    />*/}
+
             </Paper>
             <StreamControlPanel
                 toggleMic={toggleMic}
                 toggleCam={toggleCam}
                 toggleSound={toggleSound}
+                shareScreen={shareScreen}
+                stopShare={stopSharingScreen}
             />
         </MainLayout>
     );

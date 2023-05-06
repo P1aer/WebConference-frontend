@@ -3,7 +3,7 @@ import {useStateWithCallback} from "./useStateWithCallback";
 import {socket} from "../socket";
 import {ACTIONS, LOCAL_VIDEO, SERVERS} from "../constants/rtc";
 import {useDispatch, useSelector} from "react-redux";
-import {setCamState, setMicState, setSoundState} from "../redux/slices/rtcSlice";
+import {setCamState, setMicState, setScreenShare, setSoundState} from "../redux/slices/rtcSlice";
 
 
 
@@ -18,9 +18,12 @@ export const useWebRTC = (roomId) => {
 
     const peerConnections = useRef({})
     const localMediaStream = useRef(null)
+    const localDisplayStream = useRef(null)
     const peerMediaElements = useRef({
         [LOCAL_VIDEO]:null,
     })
+    const sendersTracks = useRef([])
+    const displayVideoElement = useRef(null)
     const addNewClient = useCallback((newClient, cb) => {
         setClients(list => {
             if (!list.includes(newClient)) {
@@ -52,7 +55,13 @@ export const useWebRTC = (roomId) => {
 
         return () => {
             try {
-                localMediaStream.current.getTracks().forEach(track => track.stop())
+                localMediaStream.current?.getTracks().forEach(track => track.stop())
+                localDisplayStream.current?.getTracks().forEach(track => track.stop())
+                for (const peer in peerConnections.current) {
+                    peerConnections.current[peer].close()
+                }
+                sendersTracks.current = []
+                peerConnections.current = {}
                 socket.emit(ACTIONS.LEAVE)
             }
             catch (error) {
@@ -83,9 +92,8 @@ export const useWebRTC = (roomId) => {
             }
 
             let trackNumber = 0
-            peerConnections.current[peerID].ontrack = ({streams: [remoteStream]}) => {
+            peerConnections.current[peerID].ontrack = ({streams: [remoteStream], track}) => {
                 trackNumber++
-
                 if(trackNumber === 2) {
                     trackNumber = 0;
                     addNewClient(peerID, () => {
@@ -110,7 +118,7 @@ export const useWebRTC = (roomId) => {
             }
 
             localMediaStream.current.getTracks().forEach(track => {
-                peerConnections.current[peerID].addTrack(track, localMediaStream.current)
+                sendersTracks.current.push(peerConnections.current[peerID].addTrack(track, localMediaStream.current))
             })
 
             if (createOffer){
@@ -185,6 +193,7 @@ export const useWebRTC = (roomId) => {
     const provideMediaRef = useCallback( (id, node) => {
         peerMediaElements.current[id] = node
     },[])
+
     const toggleSound = useCallback((withSave = true) => {
         if (panelState.isSoundOn) {
             setSavedState({
@@ -211,6 +220,7 @@ export const useWebRTC = (roomId) => {
 
         }
     }, [panelState, savedState, peerConnections])
+
     const toggleMic = useCallback(() => {
         if (!panelState.isSoundOn && !panelState.isMicOn) {
             toggleSound(false)
@@ -220,20 +230,51 @@ export const useWebRTC = (roomId) => {
     },[panelState])
 
     const toggleCam = useCallback(() => {
-        console.log(panelState,'state')
         if (!panelState.isSoundOn && !panelState.isCamOn) {
-            console.log('state1')
             toggleSound(false)
             dispatch(setSoundState(true))
         }
         localMediaStream.current.getVideoTracks()[0].enabled = !panelState.isCamOn
     },[panelState])
 
+    const stopSharingScreen = () => {
+        localDisplayStream.current.getTracks().forEach(track => track.stop())
+        sendersTracks.current
+            .filter(sender => sender.track.kind === 'video')
+            .forEach(sender => {
+                sender.replaceTrack(localMediaStream.current.getTracks()[1])
+            })
+        peerMediaElements.current[LOCAL_VIDEO].srcObject = localMediaStream.current
+        dispatch(setScreenShare(false))
+    }
+
+    const shareScreen = async () => {
+        localDisplayStream.current = await navigator.mediaDevices.getDisplayMedia( {
+            video: true,
+            audio: true
+        })
+        if (peerMediaElements.current[LOCAL_VIDEO]) {
+            peerMediaElements.current[LOCAL_VIDEO].srcObject = localDisplayStream.current
+        }
+        sendersTracks.current
+            .filter(sender => sender.track.kind === 'video')
+            .forEach(sender => {
+                sender.replaceTrack(localDisplayStream.current.getTracks()[0])
+            })
+
+        localDisplayStream.current.getTracks()[0].onended = () => {
+            stopSharingScreen()
+        }
+        dispatch(setScreenShare(true))
+     }
     return {
         clients,
         provideMediaRef,
         toggleMic,
         toggleCam,
         toggleSound,
+        shareScreen,
+        stopSharingScreen,
+        displayVideoElement,
     }
 }
