@@ -1,12 +1,22 @@
 .video-content {
+  position: relative;
+  display: inline-block;
+
   video {
-    border-radius: 50%;
+    border-radius: 1.5rem;
     border: #333044 4px solid;
     object-fit: cover;
-    height: 300px;
-    width: 300px;
+    max-height: 300px;
+    height: 100%;
+    width:100%;
   }
   &.talking {
     border: #0c8f3d 4px solid;
+  }
+  .starIcon {
+    position: absolute;
+    z-index: 2;
+    right: 7%;
+    top: 5%;
   }
 }

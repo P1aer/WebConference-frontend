@@ -23,6 +23,7 @@ const ChatComponent = () => {
         dispatch(setChatState(false))
     }
     const onSendMessage = () => {
+        if (!message) return
 
         const obj = {
             roomId: id,
@@ -82,7 +83,7 @@ const ChatComponent = () => {
                                     edge="end"
                                     onClick={onSendMessage}
                                 >
-                                    <SendIcon sx={{ color: blue[500]}}/>
+                                    <SendIcon aria-label='send message' sx={{ color: message ? blue[500] : 'inherit'}}/>
                                 </IconButton>
                             </InputAdornment>),
                             style: {

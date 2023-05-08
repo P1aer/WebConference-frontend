@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import MainLayout from "../layouts/main";
 import {useDispatch, useSelector} from "react-redux";
 import {addMessage, fetchRoom, leaveCurrentRoom} from "../redux/slices/roomsSlice";
@@ -9,7 +9,7 @@ import {useWebRTC} from "../hooks/useWebRTC";
 import {ACTIONS, LOCAL_VIDEO} from "../constants/rtc";
 import StreamControlPanel from "../components/StreamControlPanel/StreamControlPanel";
 import {setRTCDefault} from "../redux/slices/rtcSlice";
-import {Paper} from "@mui/material";
+import {Paper, Typography} from "@mui/material";
 import "./RoomView.scss"
 
 const RoomView = () => {
@@ -24,7 +24,6 @@ const RoomView = () => {
         toggleMic,
         toggleCam,
         toggleSound,
-        displayVideoElement,
         shareScreen,
         stopSharingScreen,
     } = useWebRTC(id)
@@ -49,22 +48,26 @@ const RoomView = () => {
     return (
         <MainLayout chat={isChatOpen}>
             <Paper square className="main-room">
-                {currentRoom && currentRoom.name}
-                {webClients.map((client) =>
-                    <VideoStreamElement key={client}>
-                        <video
-                            ref={instance => provideMediaRef(client,instance)}
-                            muted={client === LOCAL_VIDEO}
-                            autoPlay
-                            playsInline
-                        />
-                    </VideoStreamElement>
-                )}
-{/*                    <video
-                      ref={displayVideoElement}
-                      autoPlay
-                      playsInline
-                    />*/}
+                <div className='main-room__title'>
+                    <Typography variant="h3" component='span'>
+                        #
+                    </Typography>
+                    <Typography variant="h3">
+                        {currentRoom && currentRoom.name}
+                    </Typography>
+                </div>
+                <div className='main-room__videos'>
+                    {webClients.map((client) =>
+                        <VideoStreamElement key={client} isMe={client === LOCAL_VIDEO}>
+                            <video
+                                ref={instance => provideMediaRef(client,instance)}
+                                muted={client === LOCAL_VIDEO}
+                                autoPlay
+                                playsInline
+                            />
+                        </VideoStreamElement>
+                    )}
+                </div>
 
             </Paper>
             <StreamControlPanel

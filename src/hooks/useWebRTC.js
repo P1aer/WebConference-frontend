@@ -116,7 +116,7 @@ export const useWebRTC = (roomId) => {
                     })
                 }
             }
-
+            // todo пофиксить что если при заходе в комнату есть screenshare то отправлять его вместо вебки
             localMediaStream.current.getTracks().forEach(track => {
                 sendersTracks.current.push(peerConnections.current[peerID].addTrack(track, localMediaStream.current))
             })
@@ -251,7 +251,7 @@ export const useWebRTC = (roomId) => {
     const shareScreen = async () => {
         localDisplayStream.current = await navigator.mediaDevices.getDisplayMedia( {
             video: true,
-            audio: true
+//            audio: true
         })
         if (peerMediaElements.current[LOCAL_VIDEO]) {
             peerMediaElements.current[LOCAL_VIDEO].srcObject = localDisplayStream.current
