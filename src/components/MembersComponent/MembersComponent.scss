@@ -1,0 +1,18 @@
+.members{
+  &__add {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+.memberBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  &__info {
+    display: flex;
+    align-items: center;
+  }
+}

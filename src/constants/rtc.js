@@ -17,6 +17,8 @@ export const ACTIONS = {
     SESSION_DESCRIPTION: 'session-description',
     NEW_MESSAGE: 'ROOM:NEW_MESSAGE',
     SET_MESSAGE: 'ROOM:SET_MESSAGES',
+    JOINED:'ROOM:JOINED',
+    LEAVED: 'ROOM:LEAVED',
 }
 
 export const LOCAL_VIDEO = 'LOCAL_VIDEO'

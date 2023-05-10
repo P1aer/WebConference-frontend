@@ -32,8 +32,7 @@ export const useWebRTC = (roomId) => {
 
             return list;
         }, cb);
-    }, [clients, setClients]);
-
+    }, [setClients]);
     //локальные инстансы стрима
     useEffect(() => {
         setClients([])
@@ -68,7 +67,7 @@ export const useWebRTC = (roomId) => {
                 console.log(error)
             }
         }
-    },[roomId])
+    },[roomId, addNewClient, setClients])
 
     // сетевые инстансы пира
     useEffect(() => {
@@ -153,6 +152,7 @@ export const useWebRTC = (roomId) => {
                 })
             }
         }
+
         socket.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia)
         return () => {
             socket.off(ACTIONS.SESSION_DESCRIPTION);
@@ -188,7 +188,7 @@ export const useWebRTC = (roomId) => {
         return () => {
             socket.off(ACTIONS.REMOVE_PEER);
         }
-    },[])
+    },[setClients])
 
     const provideMediaRef = useCallback( (id, node) => {
         peerMediaElements.current[id] = node
@@ -219,7 +219,7 @@ export const useWebRTC = (roomId) => {
             }
 
         }
-    }, [panelState, savedState, peerConnections])
+    }, [panelState, savedState, peerConnections,dispatch])
 
     const toggleMic = useCallback(() => {
         if (!panelState.isSoundOn && !panelState.isMicOn) {
@@ -227,7 +227,7 @@ export const useWebRTC = (roomId) => {
             dispatch(setSoundState(true))
         }
         localMediaStream.current.getAudioTracks()[0].enabled = !panelState.isMicOn
-    },[panelState])
+    },[panelState,dispatch, toggleSound])
 
     const toggleCam = useCallback(() => {
         if (!panelState.isSoundOn && !panelState.isCamOn) {
@@ -235,7 +235,7 @@ export const useWebRTC = (roomId) => {
             dispatch(setSoundState(true))
         }
         localMediaStream.current.getVideoTracks()[0].enabled = !panelState.isCamOn
-    },[panelState])
+    },[panelState,dispatch,toggleSound])
 
     const stopSharingScreen = () => {
         localDisplayStream.current.getTracks().forEach(track => track.stop())

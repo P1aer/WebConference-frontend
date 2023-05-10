@@ -14,8 +14,11 @@ export const fetchRooms = createAsyncThunk("rooms/fetchRooms",async ({errorCb}) 
 
 })
 
-export const fetchRoom = createAsyncThunk("rooms/fetchRoom",async ({id}) => {
+export const fetchRoom = createAsyncThunk("rooms/fetchRoom",async ({id, cb}) => {
     const  { data } = await axios.get(`/rooms/${id}`)
+    if (cb) {
+        cb(data)
+    }
     return data;
 })
 
@@ -32,7 +35,7 @@ export const createRoom = createAsyncThunk("rooms/createRoom",async ({values, er
 })
 
 const initialState = {
-    currentRoom: null,
+    currentRoom: undefined,
     allRooms: [],
     status: "loading"
 }

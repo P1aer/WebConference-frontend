@@ -57,7 +57,7 @@ const ChatComponent = () => {
                 <Grid item flexGrow={1}>
                    <Paper className='chat-body' variant='outlined' sx={
                        {
-                           height: '70vh',
+                           height: '69vh',
                            maxHeight: '70vh',
                            marginTop: '1rem',
                            maxWidth: '23vw',

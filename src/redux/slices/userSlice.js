@@ -39,6 +39,7 @@ export const userSlice = createSlice({
             state.data = null
             state.status = "loading"
             localStorage.removeItem('token')
+            window.location.reload();
         },
     },
     extraReducers: {

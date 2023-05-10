@@ -1,18 +1,41 @@
 .main-room {
-  padding: 1rem;
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: #2b2b31 !important;
+
   &__videos {
-    display: grid;
-    grid-auto-flow: row;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem;
+    flex-grow: 1;
+    flex-direction: column;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+    display: flex;
     height: 100%;
     max-height: 69vh;
   }
-
+  &__upper, &__bottom {
+    flex-grow: 1;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+    display: flex;
+    height: 100%;
+    max-height: 69vh;
+    &.none {
+      display: none;
+    }
+  }
+  &__upper {
+    &.portraitMode {
+      max-height: 40vh;
+    }
+  }
+  &__bottom {
+    &.portraitMode {
+      max-height: 30vh;
+    }
+  }
   &__title {
+    flex-shrink: 1;
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;

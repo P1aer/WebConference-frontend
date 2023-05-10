@@ -6,6 +6,7 @@ const initialState = {
     isSoundOn: true,
     isChatOpen: false,
     isScreenShare: false,
+    isMembersOpen: false,
 }
 export const rtcSlice = createSlice({
     name: 'rtc',
@@ -21,10 +22,19 @@ export const rtcSlice = createSlice({
             state.isSoundOn = action.payload
         },
         setChatState: (state, action) => {
+            if (state.isMembersOpen && action.payload) {
+                state.isMembersOpen = false
+            }
             state.isChatOpen = action.payload
         },
         setScreenShare: (state, action) => {
             state.isScreenShare = action.payload
+        },
+        setMembersState: (state, action) => {
+            if (state.isChatOpen && action.payload) {
+                state.isChatOpen = false
+            }
+            state.isMembersOpen = action.payload
         },
         setRTCDefault: (state) => {
             state.isSoundOn = initialState.isSoundOn
@@ -32,12 +42,21 @@ export const rtcSlice = createSlice({
             state.isCamOn = initialState.isCamOn
             state.isChatOpen = initialState.isChatOpen
             state.isScreenShare = initialState.isScreenShare
+            state.isMembersOpen = initialState.isMembersOpen
         },
     },
     extraReducers: {
     }
 })
 
-export const { setCamState, setSoundState, setRTCDefault, setMicState, setChatState, setScreenShare } = rtcSlice.actions
+export const {
+    setCamState,
+    setSoundState,
+    setRTCDefault,
+    setMicState,
+    setChatState,
+    setScreenShare,
+    setMembersState,
+} = rtcSlice.actions
 
 export default rtcSlice.reducer

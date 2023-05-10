@@ -1,7 +1,13 @@
 .stream-panel {
   z-index: 2;
   padding: 1rem;
-  position: absolute;
-  bottom: 5%;
-  left: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #272727 !important;
+  max-height: 13vh;
+  flex-shrink: 1;
+  bottom: 1%;
+  left: 33%;
 }

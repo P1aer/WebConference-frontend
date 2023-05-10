@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Avatar, Card, CardContent, Typography} from "@mui/material";
+import {Avatar,Typography} from "@mui/material";
 import {stringToColor} from "../../utils/colors";
 
 const ChatMessage = ({ data, userId }) => {
