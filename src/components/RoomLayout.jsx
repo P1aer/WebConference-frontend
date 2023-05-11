@@ -24,7 +24,7 @@ const RoomLayout = ({clients, roomMembers, provideMedia }) => {
         setBottom(true)
         setPictureMode(null)
     }
-    console.log(isPictureMode, 'kog')
+
     return (
         <div className='main-room__videos'>
             <div className={`main-room__upper 

@@ -9,7 +9,7 @@ import {ProfileButton} from "../../constants/theme";
 const ProfileBar = () => {
   const {name, login, _id: id } = useSelector(state => state.user.data)
     return (
-        <div className='profile-container'>
+        id && (<div className='profile-container'>
             <ProfileButton className='profile-inner'>
                 <Avatar sx={{bgcolor: stringToColor(login),mr: '1rem'}}>{name[0].toUpperCase()}</Avatar>
                 <div className='profile-info'>
@@ -18,9 +18,9 @@ const ProfileBar = () => {
                 </div>
             </ProfileButton>
             <IconButton>
-                <SettingsIcon/>
+                <SettingsIcon aria-label='settings button'/>
             </IconButton>
-        </div>
+        </div>)
     );
 };
 
