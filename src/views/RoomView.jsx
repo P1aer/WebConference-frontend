@@ -31,11 +31,6 @@ const RoomView = () => {
     } = useWebRTC(id)
 
     useEffect(() => {
-        if (currentRoom === null) {
-          navigate('/')
-        }
-    },[currentRoom])
-    useEffect(() => {
         socket.on(ACTIONS.SET_MESSAGE, (data) => dispatch(addMessage(data)))
         socket.on(ACTIONS.JOINED, (user) => setRoomMembers(prev => [...prev, user]) )
         socket.on(ACTIONS.LEAVED, (user) => setRoomMembers(
@@ -43,21 +38,23 @@ const RoomView = () => {
                 .filter((elem) => elem.peerId !== user.peerId
                 )
         ))
-    },[])
+    },[dispatch])
 
     useEffect(() => {
-        dispatch(fetchRoom({ id, cb: (data) =>
+        dispatch(fetchRoom({ id, cb: (data) => {
                 setRoomMembers([{
-                    peerId: LOCAL_VIDEO,
-                    userName: userData.name,
-                    userId: userData._id,
-                },
-                    ...data.users
+                        peerId: LOCAL_VIDEO,
+                        userName: userData.name,
+                        userId: userData._id,
+                    },
+                        ...data.users
                     ]
-                )}
+                )
+            }
+             , errorCb : () => navigate('/')}
         ))
         dispatch(setRTCDefault())
-    },[id,dispatch])
+    },[id,dispatch,userData, navigate])
 
     useEffect(() => {
         socket.auth = {
@@ -69,7 +66,7 @@ const RoomView = () => {
         return () => {
             dispatch(leaveCurrentRoom())
         }
-    },[userData._id, dispatch])
+    },[userData._id, dispatch,userData.name])
 
     return (
         <MainLayout chat={isChatOpen} members={isMembersOpen} roomUsers={roomMembers}>

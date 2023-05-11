@@ -10,6 +10,7 @@ import {setCamState, setMicState, setScreenShare, setSoundState} from "../redux/
 export const useWebRTC = (roomId) => {
     const [clients, setClients] = useStateWithCallback([])
     const panelState = useSelector(state => state.rtc)
+
     const [savedState, setSavedState] = useState({
         isMicOn: false,
         isCamOn: false
@@ -115,11 +116,19 @@ export const useWebRTC = (roomId) => {
                     })
                 }
             }
-            // todo пофиксить что если при заходе в комнату есть screenshare то отправлять его вместо вебки
+            const senders = []
             localMediaStream.current.getTracks().forEach(track => {
-                sendersTracks.current.push(peerConnections.current[peerID].addTrack(track, localMediaStream.current))
+                senders
+                    .push(peerConnections.current[peerID]
+                        .addTrack(track, localMediaStream.current))
             })
-
+            if (panelState.isScreenShare) {
+                senders.filter(sender => sender.track.kind === 'video')
+                    .forEach(sender => {
+                        sender.replaceTrack(localDisplayStream.current.getTracks()[0])
+                    })
+            }
+            sendersTracks.current.push(...senders)
             if (createOffer){
                 const offer = await peerConnections.current[peerID].createOffer()
                 await peerConnections.current[peerID].setLocalDescription(offer)
@@ -134,7 +143,7 @@ export const useWebRTC = (roomId) => {
         return () => {
             socket.off(ACTIONS.ADD_PEER);
         }
-    },[addNewClient])
+    },[addNewClient,panelState.isScreenShare])
 
     // прилетели дескрипторы
     useEffect(() => {
