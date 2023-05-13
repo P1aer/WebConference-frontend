@@ -17,7 +17,7 @@ const ProfileBar = () => {
                     <Typography align='left' className='profile-id'>#{id.substring(0,5)}</Typography>
                 </div>
             </ProfileButton>
-            <IconButton>
+            <IconButton aria-label='settings button'>
                 <SettingsIcon aria-label='settings button'/>
             </IconButton>
         </div>)
