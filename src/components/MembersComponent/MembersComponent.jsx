@@ -55,6 +55,7 @@ const MembersComponent = ({members = []}) => {
                             fullWidth
                             placeholder='Find users'
                             value={search}
+                            role={"search"}
                             onInput={onSearch}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">

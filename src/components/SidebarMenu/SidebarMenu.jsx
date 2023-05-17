@@ -49,6 +49,7 @@ const SidebarMenu = () => {
                         color='secondary'
                         startIcon={<AddIcon sx={{ color: green[500] }}/>}
                         sx={{ textTransform: 'none', width: '100%'}}
+                        data-testid={'btn'}
                     >
                         Add room
                     </Button>

@@ -38,6 +38,8 @@ export const useWebRTC = (roomId) => {
     useEffect(() => {
         setClients([])
         async function startLocalMedia() {
+            if (!navigator
+                .mediaDevices) return
             localMediaStream.current = await navigator
                 .mediaDevices.getUserMedia({ video: true, audio: true })
             localMediaStream.current.getAudioTracks()[0].enabled = false

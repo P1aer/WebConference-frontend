@@ -18,14 +18,14 @@ window.addEventListener('load', async () => {
 })
 function App() {
   const dispatch = useDispatch()
-  const isLoggedIn = useSelector(state => !!state.user.data )
+  const isLoggedIn = useSelector(state => !!state.user.data?._id )
 
   useEffect(() => {
     dispatch(fetchAuthMe())
   },[dispatch])
   return (
       <RouterProvider router={router(isLoggedIn)}>
-        <div className="App"/>
+        <div data-testid='app' className="App"/>
       </RouterProvider>
   );
 }

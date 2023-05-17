@@ -26,7 +26,10 @@ const CreateRoomDialog = ({handleClose, open}) => {
     const dispatch = useDispatch()
     async function onCreateClick() {
         try {
-            if (!roomName) return
+            if (!roomName) {
+                handleClose()
+                return
+            }
             dispatch(createRoom({
                 values: {
                     name: roomName,
@@ -79,7 +82,7 @@ const CreateRoomDialog = ({handleClose, open}) => {
                             onInput={(event) => setRoomName(event.target?.value)}
                         />
                     </ThemeProvider>
-                    <Button onClick={onCreateClick} fullWidth size='large' variant='contained'>Create Room</Button>
+                    <Button onClick={onCreateClick} data-testid={'btn2'} fullWidth size='large' variant='contained'>Create Room</Button>
                 </Paper>
             </Fade>
         </Modal>

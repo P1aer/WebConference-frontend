@@ -7,7 +7,7 @@ import "./ProfileBar.scss"
 import {capitalizeFirstLetter} from "../../utils/string";
 import {ProfileButton} from "../../constants/theme";
 const ProfileBar = () => {
-  const {name, login, _id: id } = useSelector(state => state.user.data)
+  const {name, login, _id: id } = useSelector(state => state?.user?.data)
     return (
         id && (<div className='profile-container'>
             <ProfileButton className='profile-inner'>

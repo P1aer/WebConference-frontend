@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 const MemberBar = ({data, isMe = false}) => {
     return (
-        <div className='memberBar'>
+        <div className='memberBar' role={'listitem'}>
             <div className='memberBar__info'>
                 <Avatar sx={{bgcolor: stringToColor(data.userName)}}>
                     {data.userName[0].toUpperCase()}
@@ -13,7 +13,7 @@ const MemberBar = ({data, isMe = false}) => {
                 <Typography sx={{marginLeft: '1rem'}}>
                     {data.userName}
                     {isMe ? ' (Me) ' : ''}
-                </Typography>
+                </Typography>x
             </div>
             <IconButton>
                 <MoreVertIcon/>

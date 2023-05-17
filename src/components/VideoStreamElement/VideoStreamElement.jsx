@@ -14,6 +14,7 @@ const VideoStreamElement = ({children, isMe = false, name, className}) => {
             </Typography>)
             }
             {isMe && <StarBorderIcon
+                data-testid={'star'}
                 fontSize='large'
                 className='starIcon'
                 sx={{ color: blue[500]}}

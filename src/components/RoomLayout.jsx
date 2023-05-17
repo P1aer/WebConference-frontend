@@ -15,6 +15,7 @@ const RoomLayout = ({clients, roomMembers, provideMedia }) => {
     const upperElements = useMemo(() =>
             clients.slice(4, 4+ MAX_COLUMN_NUMBER) || [],
         [clients])
+
     const onVideoClick = (object, func) => {
         func(false)
         setPictureMode(object)
@@ -39,6 +40,7 @@ const RoomLayout = ({clients, roomMembers, provideMedia }) => {
                         name={roomMembers.find((elem) => elem.peerId === client)?.userName}
                     >
                         <video
+                            role='listitem'
                             onDoubleClick={() => !!isPictureMode ? setDefaultMode() : onVideoClick(client,setBottom)}
                             ref={instance => provideMedia(client,instance)}
                             muted={client === LOCAL_VIDEO}
@@ -60,6 +62,7 @@ const RoomLayout = ({clients, roomMembers, provideMedia }) => {
                         name={roomMembers.find((elem) => elem.peerId === client)?.userName}
                     >
                         <video
+                            role='listitem'
                             onDoubleClick={() => !!isPictureMode ? setDefaultMode() : onVideoClick(client, setUpper)}
                             ref={instance => provideMedia(client,instance)}
                             muted={client === LOCAL_VIDEO}

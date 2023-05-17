@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from "../../axios";
 
 const initialState = {
-    data: null,
+    data: {},
     status: "loading"
 }
 export const fetchAuth = createAsyncThunk("auth/fetchAuth",async ({values, errorCb}) => {

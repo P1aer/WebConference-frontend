@@ -47,25 +47,25 @@ const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound, shareScreen, st
     return (
         <Paper square className='stream-panel' >
             <Stack direction="row" spacing={4}>
-                <IconButton color={isMicOn ? 'inherit' : 'error'} onClick={toggleMicIcon}>
+                <IconButton role={"listitem"} color={isMicOn ? 'inherit' : 'error'} onClick={toggleMicIcon}>
                     {isMicOn ? <MicIcon/> : <MicOffIcon/>}
                 </IconButton>
-                <IconButton color={isCamOn ? 'inherit' : 'error'} onClick={toggleCamIcon}>
+                <IconButton role={"listitem"} color={isCamOn ? 'inherit' : 'error'} onClick={toggleCamIcon}>
                     {isCamOn ? <VideocamIcon/> : <VideocamOffIcon/>}
                 </IconButton>
-                <IconButton  onClick={toggleSoundIcon}>
+                <IconButton  role={"listitem"} onClick={toggleSoundIcon}>
                     {isSoundOn ? <HeadphonesIcon/> : <HeadsetOffIcon />}
                 </IconButton>
-                <IconButton onClick={isScreenShare ? stopShare : shareScreen}>
+                <IconButton data-testid={'share'} role={"listitem"} onClick={isScreenShare ? stopShare : shareScreen}>
                     { isScreenShare ? <CancelPresentationIcon/> :  <PresentToAllIcon /> }
                 </IconButton>
-                <IconButton onClick={toggleChat}>
+                <IconButton role={"listitem"} onClick={toggleChat}>
                     { isChatOpen ? <ChatBubbleOutlinedIcon sx={{ color: blue[300] }}/> : <ChatOutlinedIcon/> }
                 </IconButton>
-                <IconButton onClick={toggleMembers}>
+                <IconButton role={"listitem"} onClick={toggleMembers}>
                     { isMembersOpen ? <PeopleAltOutlinedIcon sx={{ color: blue[300] }}/> : <PeopleAltOutlinedIcon/>}
                 </IconButton>
-                <Link to="/">
+                <Link role={"listitem"} to="/">
                     <IconButton color='error'><LogoutIcon/></IconButton>
                 </Link>
             </Stack>
