@@ -1,6 +1,7 @@
 .profile-container {
   display: flex;
   align-items: center;
+  box-sizing: border-box;
   justify-content: space-between;
   padding: 0.2rem 1rem;
   width: 100%;
