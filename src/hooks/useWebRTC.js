@@ -40,25 +40,34 @@ export const useWebRTC = (roomId) => {
         async function startLocalMedia() {
             if (!navigator
                 .mediaDevices) return
-            localMediaStream.current = await navigator
-                .mediaDevices.getUserMedia({ video: true, audio: true })
-            localMediaStream.current.getAudioTracks()[0].enabled = false
-            localMediaStream.current.getVideoTracks()[0].enabled = false
-            addNewClient(LOCAL_VIDEO,() => {
-                const localVideoElement = peerMediaElements.current[LOCAL_VIDEO]
-                if(localVideoElement) {
-                    localVideoElement.volume = 0
-                    localVideoElement.srcObject = localMediaStream.current
+            try {
+                localMediaStream.current = await navigator
+                    .mediaDevices.getUserMedia({ video: true, audio: true })
+                if ( localMediaStream.current) {
+                    localMediaStream.current.getAudioTracks()[0].enabled = false
+                    localMediaStream.current.getVideoTracks()[0].enabled = false
+                    addNewClient(LOCAL_VIDEO,() => {
+                        const localVideoElement = peerMediaElements.current[LOCAL_VIDEO]
+                        if(localVideoElement) {
+                            localVideoElement.volume = 0
+                            localVideoElement.srcObject = localMediaStream.current
+                        }
+                    })
                 }
-            })
+            }
+            catch (error) {
+                socket.emit(ACTIONS.JOIN, roomId)
+            }
         }
         startLocalMedia()
             .then(() => socket.emit(ACTIONS.JOIN, roomId))
 
         return () => {
             try {
-                localMediaStream.current?.getTracks().forEach(track => track.stop())
-                localDisplayStream.current?.getTracks().forEach(track => track.stop())
+                if (localMediaStream.current) {
+                    localMediaStream.current?.getTracks().forEach(track => track.stop())
+                    localDisplayStream.current?.getTracks().forEach(track => track.stop())
+                }
                 for (const peer in peerConnections.current) {
                     peerConnections.current[peer].close()
                 }
@@ -119,11 +128,14 @@ export const useWebRTC = (roomId) => {
                 }
             }
             const senders = []
-            localMediaStream.current.getTracks().forEach(track => {
-                senders
-                    .push(peerConnections.current[peerID]
-                        .addTrack(track, localMediaStream.current))
-            })
+            if (localMediaStream.current) {
+                localMediaStream.current.getTracks().forEach(track => {
+                    senders
+                        .push(peerConnections.current[peerID]
+                            .addTrack(track, localMediaStream.current))
+                })
+            }
+
             if (panelState.isScreenShare) {
                 senders.filter(sender => sender.track.kind === 'video')
                     .forEach(sender => {
@@ -211,7 +223,9 @@ export const useWebRTC = (roomId) => {
                 isMicOn: panelState.isMicOn,
                 isCamOn: panelState.isCamOn,
             })
-            localMediaStream.current.getTracks().forEach(track => track.enabled = false)
+            if ( localMediaStream.current) {
+                localMediaStream.current.getTracks().forEach(track => track.enabled = false)
+            }
             for (const stream in peerConnections.current) {
                 peerMediaElements.current[stream].muted = true
             }
@@ -223,8 +237,11 @@ export const useWebRTC = (roomId) => {
                 peerMediaElements.current[stream].muted = false
             }
             if (withSave) {
-                localMediaStream.current.getAudioTracks()[0].enabled = savedState.isMicOn
-                localMediaStream.current.getVideoTracks()[0].enabled = savedState.isCamOn
+                if ( localMediaStream.current) {
+                    localMediaStream.current.getAudioTracks()[0].enabled = savedState.isMicOn
+                    localMediaStream.current.getVideoTracks()[0].enabled = savedState.isCamOn
+                }
+
                 dispatch(setCamState(savedState.isCamOn))
                 dispatch(setMicState(savedState.isMicOn))
             }
@@ -237,7 +254,9 @@ export const useWebRTC = (roomId) => {
             toggleSound(false)
             dispatch(setSoundState(true))
         }
-        localMediaStream.current.getAudioTracks()[0].enabled = !panelState.isMicOn
+        if ( localMediaStream.current) {
+            localMediaStream.current.getAudioTracks()[0].enabled = !panelState.isMicOn
+        }
     },[panelState,dispatch, toggleSound])
 
     const toggleCam = useCallback(() => {
@@ -245,7 +264,9 @@ export const useWebRTC = (roomId) => {
             toggleSound(false)
             dispatch(setSoundState(true))
         }
-        localMediaStream.current.getVideoTracks()[0].enabled = !panelState.isCamOn
+        if ( localMediaStream.current) {
+            localMediaStream.current.getVideoTracks()[0].enabled = !panelState.isCamOn
+        }
     },[panelState,dispatch,toggleSound])
 
     const stopSharingScreen = () => {
@@ -253,7 +274,12 @@ export const useWebRTC = (roomId) => {
         sendersTracks.current
             .filter(sender => sender.track.kind === 'video')
             .forEach(sender => {
-                sender.replaceTrack(localMediaStream.current.getTracks()[1])
+                if ( localMediaStream.current) {
+                    sender.replaceTrack(localMediaStream.current.getTracks()[1])
+                }
+                else {
+                    sender.replaceTrack(null)
+                }
             })
         peerMediaElements.current[LOCAL_VIDEO].srcObject = localMediaStream.current
         dispatch(setScreenShare(false))

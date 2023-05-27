@@ -13,7 +13,7 @@ const MemberBar = ({data, isMe = false}) => {
                 <Typography sx={{marginLeft: '1rem'}}>
                     {data.userName}
                     {isMe ? ' (Me) ' : ''}
-                </Typography>x
+                </Typography>
             </div>
             <IconButton>
                 <MoreVertIcon/>

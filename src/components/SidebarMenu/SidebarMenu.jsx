@@ -47,6 +47,7 @@ const SidebarMenu = () => {
                         onClick={handleOpen}
                         size="large"
                         color='secondary'
+                        className='add'
                         startIcon={<AddIcon sx={{ color: green[500] }}/>}
                         sx={{ textTransform: 'none', width: '100%'}}
                         data-testid={'btn'}

@@ -21,7 +21,9 @@ function App() {
   const isLoggedIn = useSelector(state => !!state.user.data?._id )
 
   useEffect(() => {
-    dispatch(fetchAuthMe())
+      if (localStorage.getItem('token')) {
+          dispatch(fetchAuthMe())
+      }
   },[dispatch])
   return (
       <RouterProvider router={router(isLoggedIn)}>

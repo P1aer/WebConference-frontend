@@ -47,26 +47,26 @@ const StreamControlPanel = ({ toggleMic, toggleCam, toggleSound, shareScreen, st
     return (
         <Paper square className='stream-panel' >
             <Stack direction="row" spacing={4}>
-                <IconButton role={"listitem"} color={isMicOn ? 'inherit' : 'error'} onClick={toggleMicIcon}>
-                    {isMicOn ? <MicIcon/> : <MicOffIcon/>}
+                <IconButton aria-label='toggle mic' color={isMicOn ? 'inherit' : 'error'} onClick={toggleMicIcon}>
+                    {isMicOn ? <MicIcon aria-label='toggle mic on'/> : <MicOffIcon aria-label='toggle mic off' />}
                 </IconButton>
-                <IconButton role={"listitem"} color={isCamOn ? 'inherit' : 'error'} onClick={toggleCamIcon}>
-                    {isCamOn ? <VideocamIcon/> : <VideocamOffIcon/>}
+                <IconButton aria-label='toggle cam' color={isCamOn ? 'inherit' : 'error'} onClick={toggleCamIcon}>
+                    {isCamOn ? <VideocamIcon aria-label='toggle cam on'/> : <VideocamOffIcon aria-label='toggle cam off'/>}
                 </IconButton>
-                <IconButton  role={"listitem"} onClick={toggleSoundIcon}>
-                    {isSoundOn ? <HeadphonesIcon/> : <HeadsetOffIcon />}
+                <IconButton aria-label='toggle sound' onClick={toggleSoundIcon}>
+                    {isSoundOn ? <HeadphonesIcon aria-label='toggle sound on'/> : <HeadsetOffIcon aria-label='toggle sound off' />}
                 </IconButton>
-                <IconButton data-testid={'share'} role={"listitem"} onClick={isScreenShare ? stopShare : shareScreen}>
-                    { isScreenShare ? <CancelPresentationIcon/> :  <PresentToAllIcon /> }
+                <IconButton aria-label='toggle Share screen' data-testid={'share'} onClick={isScreenShare ? stopShare : shareScreen}>
+                    { isScreenShare ? <CancelPresentationIcon aria-label='toggle Share screen on'/> :  <PresentToAllIcon aria-label='toggle Share screen off'/> }
                 </IconButton>
-                <IconButton role={"listitem"} onClick={toggleChat}>
-                    { isChatOpen ? <ChatBubbleOutlinedIcon sx={{ color: blue[300] }}/> : <ChatOutlinedIcon/> }
+                <IconButton aria-label='toggle Chat' onClick={toggleChat}>
+                    { isChatOpen ? <ChatBubbleOutlinedIcon aria-label='toggle Chat on' sx={{ color: blue[300] }}/> : <ChatOutlinedIcon aria-label='toggle Chat off'/> }
                 </IconButton>
-                <IconButton role={"listitem"} onClick={toggleMembers}>
-                    { isMembersOpen ? <PeopleAltOutlinedIcon sx={{ color: blue[300] }}/> : <PeopleAltOutlinedIcon/>}
+                <IconButton aria-label='toggle Members' onClick={toggleMembers}>
+                    { isMembersOpen ? <PeopleAltOutlinedIcon aria-label='toggle Members on' sx={{ color: blue[300] }}/> : <PeopleAltOutlinedIcon aria-label='toggle Members off'/>}
                 </IconButton>
-                <Link role={"listitem"} to="/">
-                    <IconButton color='error'><LogoutIcon/></IconButton>
+                <Link to="/" aria-label='leave room'>
+                    <IconButton aria-label='leave room' color='error'><LogoutIcon aria-label='leave room' /></IconButton>
                 </Link>
             </Stack>
         </Paper>
